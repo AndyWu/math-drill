@@ -4,9 +4,13 @@ A timed, self-generating math practice test — multiplication, addition/subtrac
 
 All data (name, answers, score history) stays in the browser via `localStorage`; nothing is sent to or stored on a server.
 
+## Try it
+
+**https://andywu.github.io/math-drill/**
+
 ## Files
 
-- `math-drill-standalone.html` — complete, self-contained page. Host this on any static web server (e.g. Apache), or just open it directly in a browser.
+- `index.html` — complete, self-contained page. Served directly by GitHub Pages above; also works hosted on any other static web server (e.g. Apache), or opened directly in a browser.
 - `math-drill.html` — the same app as a body-only fragment, built for publishing as a Claude Artifact (the platform supplies its own `<head>`/wrapper around it). Not meant to be served directly.
 
 ## Author
