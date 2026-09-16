@@ -1121,23 +1121,26 @@
 
     var total = totalQ;
     var pct = total ? Math.round((score / total) * 100) : 0;
-    var name = els.nameInput.value.trim() || "Anonymous";
+    var name = els.nameInput.value.trim();
 
     els.resultsScore.innerHTML = score + '<span>/' + total + '</span>';
-    els.resultsMeta.innerHTML =
-      name + " &middot; " + pct + "% &middot; time <strong>" + formatDuration(finalElapsedSec) + "</strong>";
+    els.resultsMeta.innerHTML = name
+      ? name + " &middot; " + pct + "% &middot; time <strong>" + formatDuration(finalElapsedSec) + "</strong>"
+      : pct + "% &middot; time <strong>" + formatDuration(finalElapsedSec) + "</strong> &middot; <em>not saved &mdash; enter a name to save your score</em>";
     els.resultsPanel.hidden = false;
 
-    saveScore({
-      date: new Date().toISOString().slice(0, 10),
-      timestamp: new Date().toLocaleString(),
-      name: name,
-      score: score,
-      total: total,
-      pct: pct,
-      durationSec: finalElapsedSec,
-      questions: questionDetails
-    });
+    if (name){
+      saveScore({
+        date: new Date().toISOString().slice(0, 10),
+        timestamp: new Date().toLocaleString(),
+        name: name,
+        score: score,
+        total: total,
+        pct: pct,
+        durationSec: finalElapsedSec,
+        questions: questionDetails
+      });
+    }
   }
 
   function getScores(){
