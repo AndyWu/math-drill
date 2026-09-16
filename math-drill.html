@@ -586,7 +586,7 @@
     <div class="categories" id="categoriesList" role="group" aria-label="Question categories to include"></div>
     <p class="category-warning" id="categoryWarning" hidden>Select at least one category above to generate a test.</p>
 
-    <p class="empty-state" id="emptyState">Enter your name, choose a question count, and press <strong>Generate Test</strong> to begin. Fraction answers can be entered as <strong>3/4</strong>, <strong>0.75</strong>, or a whole number.</p>
+    <p class="empty-state" id="emptyState">Enter your name, choose a question count, and press <strong>Generate Test</strong> to begin. Fraction answers can be entered as <strong>3/4</strong>, <strong>0.75</strong>, or a whole number. Prime factor answers can be listed in any format, e.g. <strong>2,2,2,3</strong> or <strong>2×2×2×3</strong>.</p>
 
     <p class="privacy-note">🔒 Your name, answers, and score history stay on this device only &mdash; nothing is sent to or stored on a server.</p>
 
@@ -637,7 +637,7 @@
   "use strict";
 
   var STORAGE_KEY = "mathDrillScores";
-  var TYPES = ["mul1","mul2","mul4","add3","sub3","fracAdd","fracSub","fracMul","fracDiv","longCalc"];
+  var TYPES = ["mul1","mul2","mul4","add3","sub3","fracAdd","fracSub","fracMul","fracDiv","longCalc","primeFactors","gcf","lcm"];
   var TAGS = {
     mul1: "1-digit ×",
     mul2: "2-digit ×",
@@ -648,7 +648,10 @@
     fracSub: "Fraction −",
     fracMul: "Fraction ×",
     fracDiv: "Fraction ÷",
-    longCalc: "Mixed Ops"
+    longCalc: "Mixed Ops",
+    primeFactors: "Prime Factors",
+    gcf: "GCF",
+    lcm: "LCM"
   };
 
   var els = {
@@ -764,6 +767,67 @@
     return q;
   }
 
+  function formatPrimeFactors(factors){
+    if (factors.length === 1) return String(factors[0]);
+    return factors[0] + factors.slice(1).map(function(f){ return "(" + f + ")"; }).join("");
+  }
+
+  function buildPrimeFactorsQuestion(q){
+    var POOL = [2, 3, 5, 7, 11, 13];
+    var factors, n, attempts = 0;
+    do {
+      var count = randInt(2, 4);
+      factors = [];
+      for (var i = 0; i < count; i++) factors.push(POOL[randInt(0, POOL.length - 1)]);
+      factors.sort(function(a, b){ return a - b; });
+      n = factors.reduce(function(p, f){ return p * f; }, 1);
+      attempts++;
+    } while (n > 300 && attempts < 30);
+
+    q.kind = "primeFactors";
+    q.answer = factors;
+    q.equationHtml = "Prime factors of " + n + " <span class=\"eq\">=</span>";
+    q.equationText = "Prime factors of " + n + " =";
+    return q;
+  }
+
+  function joinList(nums){
+    if (nums.length === 2) return nums[0] + " and " + nums[1];
+    return nums.slice(0, -1).join(", ") + ", and " + nums[nums.length - 1];
+  }
+
+  function buildGcfQuestion(q){
+    var count = randInt(0, 1) ? 2 : 3;
+    var base = randInt(2, 9);
+    var nums = [];
+    for (var i = 0; i < count; i++) nums.push(base * randInt(2, 10));
+    var answer = nums.reduce(function(a, b){ return gcd(a, b); });
+
+    q.kind = "integer";
+    q.answer = answer;
+    q.equationHtml = "GCF of " + joinList(nums) + " <span class=\"eq\">=</span>";
+    q.equationText = "GCF of " + joinList(nums) + " =";
+    return q;
+  }
+
+  function buildLcmQuestion(q){
+    var count = randInt(0, 1) ? 2 : 3;
+    var maxVal = count === 2 ? 15 : 12;
+    var nums, answer, attempts = 0;
+    do {
+      nums = [];
+      for (var i = 0; i < count; i++) nums.push(randInt(2, maxVal));
+      answer = nums.reduce(function(a, b){ return (a * b) / gcd(a, b); });
+      attempts++;
+    } while (answer > 300 && attempts < 30);
+
+    q.kind = "integer";
+    q.answer = answer;
+    q.equationHtml = "LCM of " + joinList(nums) + " <span class=\"eq\">=</span>";
+    q.equationText = "LCM of " + joinList(nums) + " =";
+    return q;
+  }
+
   function buildQuestion(type){
     var q = { type: type, tag: TAGS[type] };
 
@@ -810,6 +874,18 @@
       return buildLongCalc(q);
     }
 
+    if (type === "primeFactors"){
+      return buildPrimeFactorsQuestion(q);
+    }
+
+    if (type === "gcf"){
+      return buildGcfQuestion(q);
+    }
+
+    if (type === "lcm"){
+      return buildLcmQuestion(q);
+    }
+
     var f1 = makeFrac(), f2 = makeFrac(), num, den, opSymbol, opPlain;
 
     if (type === "fracAdd"){
@@ -846,6 +922,7 @@
 
   function formatAnswer(q){
     if (q.kind === "integer") return String(q.answer);
+    if (q.kind === "primeFactors") return formatPrimeFactors(q.answer);
     if (q.answer.d === 1) return String(q.answer.n);
     return q.answer.n + "/" + q.answer.d;
   }
@@ -917,6 +994,16 @@
     if (q.kind === "integer"){
       if (!/^-?\d+$/.test(raw)) return false;
       return parseInt(raw, 10) === q.answer;
+    }
+    if (q.kind === "primeFactors"){
+      var nums = raw.match(/\d+/g);
+      if (!nums || !nums.length) return false;
+      var userFactors = nums.map(Number).sort(function(a, b){ return a - b; });
+      if (userFactors.length !== q.answer.length) return false;
+      for (var fi = 0; fi < userFactors.length; fi++){
+        if (userFactors[fi] !== q.answer[fi]) return false;
+      }
+      return true;
     }
     if (/^-?\d+\/\d+$/.test(raw)){
       var parts = raw.split("/");
