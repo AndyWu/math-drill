@@ -1,0 +1,1236 @@
+<title>Math Drill</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper: #f6f4ee;
+    --paper-raised: #ffffff;
+    --ink: #262320;
+    --ink-soft: #6b6459;
+    --line: #d9d2c2;
+    --line-strong: #c3baa5;
+    --accent: #2a5d8c;
+    --accent-soft: #dfeaf3;
+    --accent-ink: #163b58;
+    --good: #2f7d52;
+    --good-soft: #e2f1e8;
+    --bad: #b23a2e;
+    --bad-soft: #fbe7e3;
+    --margin-rule: #c1554a;
+    --shadow: 0 1px 2px rgba(38,35,32,0.06), 0 8px 24px rgba(38,35,32,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #16181a;
+      --paper-raised: #1e2124;
+      --ink: #e9e5db;
+      --ink-soft: #a39d8f;
+      --line: #34383b;
+      --line-strong: #42474a;
+      --accent: #7fb1de;
+      --accent-soft: #223546;
+      --accent-ink: #cfe6f7;
+      --good: #6cbf8f;
+      --good-soft: #1e3327;
+      --bad: #e08579;
+      --bad-soft: #3a2320;
+      --margin-rule: #8a4a42;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #16181a;
+    --paper-raised: #1e2124;
+    --ink: #e9e5db;
+    --ink-soft: #a39d8f;
+    --line: #34383b;
+    --line-strong: #42474a;
+    --accent: #7fb1de;
+    --accent-soft: #223546;
+    --accent-ink: #cfe6f7;
+    --good: #6cbf8f;
+    --good-soft: #1e3327;
+    --bad: #e08579;
+    --bad-soft: #3a2320;
+    --margin-rule: #8a4a42;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  *{ box-sizing: border-box; }
+  [hidden]{ display: none !important; }
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px 80px;
+  }
+  .page{ width: 100%; max-width: 760px; }
+
+  .sheet{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    padding: 28px clamp(18px, 5vw, 40px) 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sheet::before{
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    left: clamp(14px, 4vw, 32px);
+    width: 2px;
+    background: var(--margin-rule);
+    opacity: 0.35;
+  }
+
+  .sheet-head{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 18px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand{ display: flex; align-items: center; gap: 14px; }
+  .brand-mark{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 8px;
+    width: 46px; height: 46px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  h1{
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .tagline{
+    margin: 2px 0 0;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  .categories-head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 14px 0 8px;
+  }
+  .categories-label{
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .categories-actions{ display: flex; gap: 12px; }
+  .link-btn{
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent-ink);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+  .link-btn:hover{ color: var(--accent); }
+  .categories{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    margin: 0 0 4px;
+  }
+  .category-pill{
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  .category-pill input{
+    width: 12px;
+    height: 12px;
+    margin: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .category-pill:has(input:not(:checked)){
+    background: transparent;
+    color: var(--ink-soft);
+    border-color: var(--line-strong);
+    opacity: 0.75;
+  }
+  .category-pill:focus-within{
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .category-warning{
+    color: var(--bad);
+    font-size: 0.8rem;
+    margin: 0 0 10px;
+  }
+  .privacy-note{
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+  }
+  .page-footer{
+    text-align: center;
+    margin-top: 18px;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+  .page-footer a{
+    color: var(--accent-ink);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .page-footer a:hover{ color: var(--accent); }
+  .timer-chip{
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.95rem;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    border-radius: 999px;
+    padding: 7px 14px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .setup{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+  .field{ display: flex; flex-direction: column; gap: 5px; }
+  .field-narrow{ width: 110px; }
+  .field label{
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .field input{
+    font-family: "Work Sans", sans-serif;
+    font-size: 0.95rem;
+    padding: 9px 11px;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    background: var(--paper);
+    color: var(--ink);
+    min-width: 140px;
+  }
+  .field-narrow input{ min-width: 0; width: 100%; font-family: "IBM Plex Mono", monospace; text-align: center; }
+  .field input:focus{ outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .btn{
+    font-family: "Work Sans", sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 10px 18px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform 0.05s ease;
+  }
+  .btn:active{ transform: translateY(1px); }
+  .btn:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn-primary{ background: var(--accent); color: var(--paper-raised); }
+  .btn-primary:hover{ filter: brightness(1.08); }
+  .btn-ghost{ background: transparent; color: var(--accent-ink); border-color: var(--line-strong); }
+  .btn-ghost:hover{ background: var(--accent-soft); }
+  .btn-submit{
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 1rem;
+    padding: 12px 30px;
+  }
+
+  .empty-state{
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    padding: 20px 2px 6px;
+  }
+
+  .quiz{ margin-top: 10px; }
+  .question-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .question-row{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 13px 2px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .q-num{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    width: 20px;
+    flex-shrink: 0;
+  }
+  .q-tag{
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: 3px 7px;
+    width: 128px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .q-equation{
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 1.1rem;
+    flex: 1 1 180px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .q-equation .op{ color: var(--accent); padding: 0 2px; }
+  .q-equation .eq{ color: var(--ink-soft); }
+  .frac{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.15;
+    vertical-align: middle;
+    font-size: 0.95em;
+  }
+  .frac .num, .frac .den{ padding: 0 3px; }
+  .frac .num{ border-bottom: 1.5px solid currentColor; }
+  .q-answer{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 1.05rem;
+    width: 108px;
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid var(--line-strong);
+    background: transparent;
+    color: var(--ink);
+    padding: 5px 2px;
+  }
+  .q-answer:focus{ outline: none; border-color: var(--accent); }
+  .q-answer[readonly]{ color: var(--ink-soft); }
+  .question-row.correct .q-answer{ border-color: var(--good); color: var(--good); }
+  .question-row.incorrect .q-answer{ border-color: var(--bad); color: var(--bad); }
+  .q-feedback{
+    width: 18px;
+    text-align: center;
+    font-size: 1.05rem;
+  }
+  .q-feedback.correct{ color: var(--good); }
+  .q-feedback.incorrect{ color: var(--bad); }
+  .q-time{
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    min-width: 34px;
+    text-align: right;
+  }
+  .q-correction{
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-family: "IBM Plex Mono", monospace;
+  }
+
+  .submit-row{
+    display: flex;
+    justify-content: center;
+    padding-top: 22px;
+  }
+
+  .results{
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+    justify-content: space-between;
+  }
+  .results-score{
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 2.4rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .results-score span{ font-size: 1.2rem; color: var(--ink-soft); font-family: "Work Sans", sans-serif; font-weight: 500; }
+  .results-meta{ font-size: 0.88rem; color: var(--ink-soft); line-height: 1.6; }
+  .results-meta strong{ color: var(--ink); font-family: "IBM Plex Mono", monospace; }
+
+  .overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(20,18,15,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 10;
+  }
+  .history-card{
+    background: var(--paper-raised);
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 760px;
+    max-height: 82vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .history-head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .history-head h2{
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 1.25rem;
+    margin: 0;
+    font-weight: 600;
+  }
+  .icon-btn{
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+  }
+  .icon-btn:hover{ color: var(--ink); }
+  .history-body{
+    padding: 8px 20px 20px;
+    overflow-y: auto;
+  }
+  table.history-table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  table.history-table th{
+    text-align: left;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    padding: 8px 8px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  table.history-table td{
+    padding: 8px 8px;
+    border-bottom: 1px solid var(--line);
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  table.history-table td.name-cell{ font-family: "Work Sans", sans-serif; }
+  .history-empty{ color: var(--ink-soft); font-size: 0.9rem; padding: 20px 2px; }
+  .history-pct{ font-weight: 600; }
+  .history-pct.good{ color: var(--good); }
+  .history-pct.bad{ color: var(--bad); }
+
+  .history-actions{
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 0 4px;
+  }
+  .history-details{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 4px;
+  }
+  .detail-card{
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .detail-head{
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  .detail-table-wrap{ overflow-x: auto; }
+  table.detail-table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+  table.detail-table th{
+    text-align: left;
+    font-size: 0.64rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  table.detail-table td{
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--line);
+    font-family: "IBM Plex Mono", monospace;
+  }
+  table.detail-table td.correct{ color: var(--good); }
+  table.detail-table td.incorrect{ color: var(--bad); }
+  .detail-empty{ color: var(--ink-soft); font-size: 0.82rem; font-style: italic; }
+
+  .category-stats-panel{ padding-top: 4px; }
+  .category-stats{ display: flex; flex-direction: column; }
+  .stat-row{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .stat-row:last-child{ border-bottom: none; }
+  .stat-label{
+    width: 120px;
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+  .stat-bar{
+    flex: 1;
+    height: 10px;
+    border-radius: 5px;
+    background: var(--bad-soft);
+    overflow: hidden;
+  }
+  .stat-bar-correct{ height: 100%; background: var(--good); }
+  .stat-count{
+    width: 96px;
+    flex-shrink: 0;
+    text-align: right;
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 520px){
+    .q-tag{ display: none; }
+    .q-equation{ font-size: 1rem; }
+    .results{ flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .btn{ transition: none; }
+  }
+</style>
+
+<div class="page">
+  <div class="sheet">
+    <header class="sheet-head">
+      <div class="brand">
+        <span class="brand-mark">&times;&divide;</span>
+        <div>
+          <h1>Math Drill</h1>
+          <p class="tagline">Timed practice &mdash; arithmetic &amp; fractions</p>
+        </div>
+      </div>
+      <div class="timer-chip" id="timerChip" aria-live="polite">⏱ 0:00</div>
+    </header>
+
+    <div class="categories-head">
+      <span class="categories-label">Categories</span>
+      <div class="categories-actions">
+        <button type="button" class="link-btn" id="selectAllBtn">Select All</button>
+        <button type="button" class="link-btn" id="resetBtn">Reset</button>
+      </div>
+    </div>
+    <div class="categories" id="categoriesList" role="group" aria-label="Question categories to include"></div>
+    <p class="category-warning" id="categoryWarning" hidden>Select at least one category above to generate a test.</p>
+
+    <p class="empty-state" id="emptyState">Enter your name, choose a question count, and press <strong>Generate Test</strong> to begin. Fraction answers can be entered as <strong>3/4</strong>, <strong>0.75</strong>, or a whole number.</p>
+
+    <p class="privacy-note">🔒 Your name, answers, and score history stay on this device only &mdash; nothing is sent to or stored on a server.</p>
+
+    <section class="setup">
+      <div class="field">
+        <label for="nameInput">Name</label>
+        <input type="text" id="nameInput" placeholder="Your name" autocomplete="off">
+      </div>
+      <div class="field field-narrow">
+        <label for="countInput"># Questions</label>
+        <input type="number" id="countInput" min="1" max="50" value="10" inputmode="numeric">
+      </div>
+      <button class="btn btn-primary" id="generateBtn" type="button">Generate Test</button>
+      <button class="btn btn-ghost" id="historyBtn" type="button">View Score History</button>
+    </section>
+
+    <form class="quiz" id="quizForm" hidden>
+      <ol class="question-list" id="questionList"></ol>
+      <div class="submit-row">
+        <button type="submit" class="btn btn-submit">Submit Test</button>
+      </div>
+    </form>
+
+    <section class="results" id="resultsPanel" hidden>
+      <div>
+        <div class="results-score" id="resultsScore">0<span>/0</span></div>
+        <div class="results-meta" id="resultsMeta"></div>
+      </div>
+      <button class="btn btn-primary" id="newTestBtn" type="button">Generate New Test</button>
+    </section>
+  </div>
+
+  <footer class="page-footer">Built by Andy Wu &middot; <a href="mailto:andycswu@gmail.com">andycswu@gmail.com</a></footer>
+</div>
+
+<div class="overlay" id="historyOverlay" hidden>
+  <div class="history-card">
+    <div class="history-head">
+      <h2>Score History</h2>
+      <button class="icon-btn" id="closeHistory" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="history-body" id="historyBody"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var STORAGE_KEY = "mathDrillScores";
+  var TYPES = ["mul1","mul2","mul4","add3","sub3","fracAdd","fracSub","fracMul","fracDiv","longCalc"];
+  var TAGS = {
+    mul1: "1-digit ×",
+    mul2: "2-digit ×",
+    mul4: "≤4-digit ×",
+    add3: "≤3-digit +",
+    sub3: "≤3-digit −",
+    fracAdd: "Fraction +",
+    fracSub: "Fraction −",
+    fracMul: "Fraction ×",
+    fracDiv: "Fraction ÷",
+    longCalc: "Mixed Ops"
+  };
+
+  var els = {
+    categoriesList: document.getElementById("categoriesList"),
+    categoryWarning: document.getElementById("categoryWarning"),
+    selectAllBtn: document.getElementById("selectAllBtn"),
+    resetBtn: document.getElementById("resetBtn"),
+    nameInput: document.getElementById("nameInput"),
+    countInput: document.getElementById("countInput"),
+    generateBtn: document.getElementById("generateBtn"),
+    historyBtn: document.getElementById("historyBtn"),
+    emptyState: document.getElementById("emptyState"),
+    quizForm: document.getElementById("quizForm"),
+    questionList: document.getElementById("questionList"),
+    resultsPanel: document.getElementById("resultsPanel"),
+    resultsScore: document.getElementById("resultsScore"),
+    resultsMeta: document.getElementById("resultsMeta"),
+    newTestBtn: document.getElementById("newTestBtn"),
+    timerChip: document.getElementById("timerChip"),
+    historyOverlay: document.getElementById("historyOverlay"),
+    historyBody: document.getElementById("historyBody"),
+    closeHistory: document.getElementById("closeHistory")
+  };
+
+  var currentQuestions = [];
+  var questionEnterTimes = [];
+  var timerStarted = false;
+  var startTime = 0;
+  var finalElapsedSec = 0;
+  var intervalId = null;
+
+  function randInt(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function randDigitNumber(maxDigits){
+    var digits = randInt(1, maxDigits);
+    var min = Math.pow(10, digits - 1);
+    var max = Math.pow(10, digits) - 1;
+    return randInt(min, max);
+  }
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function gcd(a, b){
+    a = Math.abs(a); b = Math.abs(b);
+    while (b){ var t = b; b = a % b; a = t; }
+    return a || 1;
+  }
+
+  function reduceFrac(n, d){
+    if (d < 0){ n = -n; d = -d; }
+    var g = gcd(n, d);
+    return { n: n / g, d: d / g };
+  }
+
+  function makeFrac(){
+    var d = randInt(2, 10);
+    var n = randInt(1, d - 1);
+    return { n: n, d: d };
+  }
+
+  function fracLess(a, b){
+    return a.n * b.d < b.n * a.d;
+  }
+
+  function fracSpan(n, d){
+    return '<span class="frac"><span class="num">' + n + '</span><span class="den">' + d + '</span></span>';
+  }
+
+  function buildLongCalc(q){
+    var termTypes = shuffle(["num", "mul", "div", "num"]);
+    var terms = termTypes.map(function(t){
+      if (t === "mul"){
+        var a = randInt(2, 12), b = randInt(2, 12);
+        return { value: a * b, text: a + ' <span class="op">&times;</span> ' + b, plain: a + " × " + b };
+      }
+      if (t === "div"){
+        var divisor = randInt(2, 9), quotient = randInt(2, 12);
+        var dividend = divisor * quotient;
+        return { value: quotient, text: dividend + ' <span class="op">&divide;</span> ' + divisor, plain: dividend + " ÷ " + divisor };
+      }
+      var n = randInt(2, 50);
+      return { value: n, text: String(n), plain: String(n) };
+    });
+
+    var joins = [randInt(0, 1) ? "+" : "&minus;", randInt(0, 1) ? "+" : "&minus;", randInt(0, 1) ? "+" : "&minus;"];
+    if (joins.indexOf("+") === -1) joins[randInt(0, 2)] = "+";
+    if (joins.indexOf("&minus;") === -1) joins[randInt(0, 2)] = "&minus;";
+
+    var total = terms[0].value;
+    var htmlParts = [terms[0].text];
+    var plainParts = [terms[0].plain];
+    for (var i = 1; i < terms.length; i++){
+      var sign = joins[i - 1];
+      var signPlain = sign === "+" ? "+" : "−";
+      total = sign === "+" ? total + terms[i].value : total - terms[i].value;
+      htmlParts.push('<span class="op">' + sign + '</span>', terms[i].text);
+      plainParts.push(signPlain, terms[i].plain);
+    }
+
+    q.kind = "integer";
+    q.answer = total;
+    q.equationHtml = htmlParts.join(' ') + ' <span class="eq">=</span>';
+    q.equationText = plainParts.join(' ') + ' =';
+    return q;
+  }
+
+  function buildQuestion(type){
+    var q = { type: type, tag: TAGS[type] };
+
+    if (type === "mul1" || type === "mul2"){
+      var range = type === "mul1" ? [1, 9] : [10, 99];
+      var a = randInt(range[0], range[1]);
+      var b = randInt(range[0], range[1]);
+      q.kind = "integer";
+      q.answer = a * b;
+      q.equationHtml = a + ' <span class="op">&times;</span> ' + b + ' <span class="eq">=</span>';
+      q.equationText = a + " × " + b + " =";
+      return q;
+    }
+
+    if (type === "mul4"){
+      var a4 = randDigitNumber(4), b4 = randDigitNumber(4);
+      q.kind = "integer";
+      q.answer = a4 * b4;
+      q.equationHtml = a4 + ' <span class="op">&times;</span> ' + b4 + ' <span class="eq">=</span>';
+      q.equationText = a4 + " × " + b4 + " =";
+      return q;
+    }
+
+    if (type === "add3"){
+      var aAdd = randDigitNumber(3), bAdd = randDigitNumber(3);
+      q.kind = "integer";
+      q.answer = aAdd + bAdd;
+      q.equationHtml = aAdd + ' <span class="op">+</span> ' + bAdd + ' <span class="eq">=</span>';
+      q.equationText = aAdd + " + " + bAdd + " =";
+      return q;
+    }
+
+    if (type === "sub3"){
+      var aSub = randDigitNumber(3), bSub = randDigitNumber(3);
+      if (aSub < bSub){ var tmpSub = aSub; aSub = bSub; bSub = tmpSub; }
+      q.kind = "integer";
+      q.answer = aSub - bSub;
+      q.equationHtml = aSub + ' <span class="op">&minus;</span> ' + bSub + ' <span class="eq">=</span>';
+      q.equationText = aSub + " − " + bSub + " =";
+      return q;
+    }
+
+    if (type === "longCalc"){
+      return buildLongCalc(q);
+    }
+
+    var f1 = makeFrac(), f2 = makeFrac(), num, den, opSymbol, opPlain;
+
+    if (type === "fracAdd"){
+      opSymbol = "+";
+      opPlain = "+";
+      num = f1.n * f2.d + f2.n * f1.d;
+      den = f1.d * f2.d;
+    } else if (type === "fracSub"){
+      opSymbol = "&minus;";
+      opPlain = "−";
+      if (fracLess(f1, f2)){ var tmp = f1; f1 = f2; f2 = tmp; }
+      num = f1.n * f2.d - f2.n * f1.d;
+      den = f1.d * f2.d;
+    } else if (type === "fracMul"){
+      opSymbol = "&times;";
+      opPlain = "×";
+      num = f1.n * f2.n;
+      den = f1.d * f2.d;
+    } else {
+      opSymbol = "&divide;";
+      opPlain = "÷";
+      num = f1.n * f2.d;
+      den = f1.d * f2.n;
+    }
+
+    var reduced = reduceFrac(num, den);
+    q.kind = "fraction";
+    q.answer = reduced;
+    q.equationHtml = fracSpan(f1.n, f1.d) + ' <span class="op">' + opSymbol + '</span> ' +
+      fracSpan(f2.n, f2.d) + ' <span class="eq">=</span>';
+    q.equationText = f1.n + "/" + f1.d + " " + opPlain + " " + f2.n + "/" + f2.d + " =";
+    return q;
+  }
+
+  function formatAnswer(q){
+    if (q.kind === "integer") return String(q.answer);
+    if (q.answer.d === 1) return String(q.answer.n);
+    return q.answer.n + "/" + q.answer.d;
+  }
+
+  function renderQuestions(){
+    els.questionList.innerHTML = "";
+    currentQuestions.forEach(function(q, i){
+      var li = document.createElement("li");
+      li.className = "question-row";
+      li.dataset.index = i;
+      li.innerHTML =
+        '<span class="q-num">' + (i + 1) + '.</span>' +
+        '<span class="q-tag">' + q.tag + '</span>' +
+        '<span class="q-equation">' + q.equationHtml + '</span>' +
+        '<input class="q-answer" type="text" inputmode="text" autocomplete="off" data-index="' + i + '" aria-label="Answer to question ' + (i + 1) + '">' +
+        '<span class="q-feedback"></span>' +
+        '<span class="q-time"></span>';
+      els.questionList.appendChild(li);
+    });
+
+    var inputs = els.questionList.querySelectorAll(".q-answer");
+    inputs.forEach(function(input, i){
+      input.addEventListener("input", onFirstInput);
+      input.addEventListener("focus", function(){
+        if (questionEnterTimes[i] == null) questionEnterTimes[i] = Date.now();
+      });
+      input.addEventListener("keydown", function(e){
+        if (e.key !== "Enter") return;
+        e.preventDefault();
+        if (i < inputs.length - 1){
+          inputs[i + 1].focus();
+          inputs[i + 1].select();
+        } else {
+          els.quizForm.requestSubmit();
+        }
+      });
+    });
+  }
+
+  function onFirstInput(){
+    if (timerStarted) return;
+    timerStarted = true;
+    startTime = Date.now();
+    intervalId = setInterval(updateTimerDisplay, 250);
+  }
+
+  function formatDuration(sec){
+    var m = Math.floor(sec / 60);
+    var s = sec % 60;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  function updateTimerDisplay(){
+    var elapsed = Math.floor((Date.now() - startTime) / 1000);
+    els.timerChip.textContent = "⏱ " + formatDuration(elapsed);
+  }
+
+  function resetTimer(){
+    timerStarted = false;
+    startTime = 0;
+    finalElapsedSec = 0;
+    if (intervalId){ clearInterval(intervalId); intervalId = null; }
+    els.timerChip.textContent = "⏱ 0:00";
+  }
+
+  function parseUserAnswer(raw, q){
+    raw = (raw || "").trim();
+    if (!raw) return false;
+    if (q.kind === "integer"){
+      if (!/^-?\d+$/.test(raw)) return false;
+      return parseInt(raw, 10) === q.answer;
+    }
+    if (/^-?\d+\/\d+$/.test(raw)){
+      var parts = raw.split("/");
+      var n = parseInt(parts[0], 10);
+      var d = parseInt(parts[1], 10);
+      if (d === 0) return false;
+      if (d < 0){ n = -n; d = -d; }
+      return n * q.answer.d === q.answer.n * d;
+    }
+    if (/^-?\d+$/.test(raw)){
+      return parseInt(raw, 10) * q.answer.d === q.answer.n;
+    }
+    if (/^-?\d*\.\d+$/.test(raw)){
+      var target = q.answer.n / q.answer.d;
+      return Math.abs(parseFloat(raw) - target) < 1e-9;
+    }
+    return false;
+  }
+
+  function getSelectedTypes(){
+    var boxes = els.categoriesList.querySelectorAll(".category-checkbox:checked");
+    return Array.prototype.map.call(boxes, function(cb){ return cb.value; });
+  }
+
+  function generateTest(){
+    var selectedTypes = getSelectedTypes();
+    if (!selectedTypes.length){
+      els.categoryWarning.hidden = false;
+      return;
+    }
+    els.categoryWarning.hidden = true;
+
+    var count = parseInt(els.countInput.value, 10);
+    if (!count || count < 1) count = 1;
+    if (count > 50) count = 50;
+    els.countInput.value = count;
+
+    currentQuestions = [];
+    for (var i = 0; i < count; i++){
+      var type = selectedTypes[randInt(0, selectedTypes.length - 1)];
+      currentQuestions.push(buildQuestion(type));
+    }
+    questionEnterTimes = new Array(count).fill(null);
+
+    resetTimer();
+    els.emptyState.hidden = true;
+    els.resultsPanel.hidden = true;
+    els.quizForm.hidden = false;
+    renderQuestions();
+
+    var firstInput = els.questionList.querySelector(".q-answer");
+    if (firstInput) firstInput.focus();
+  }
+
+  function submitTest(){
+    var now = Date.now();
+    if (timerStarted){
+      finalElapsedSec = Math.floor((now - startTime) / 1000);
+      clearInterval(intervalId);
+      intervalId = null;
+    } else {
+      finalElapsedSec = 0;
+    }
+    els.timerChip.textContent = "⏱ " + formatDuration(finalElapsedSec);
+
+    var totalQ = currentQuestions.length;
+    var perQuestionSeconds = [];
+    for (var qi = 0; qi < totalQ; qi++){
+      var startAt = questionEnterTimes[qi];
+      if (startAt == null){ perQuestionSeconds.push(null); continue; }
+      var endAt = now;
+      for (var k = qi + 1; k < totalQ; k++){
+        if (questionEnterTimes[k] != null){ endAt = questionEnterTimes[k]; break; }
+      }
+      perQuestionSeconds.push(Math.max(0, Math.round((endAt - startAt) / 1000)));
+    }
+
+    var rows = els.questionList.querySelectorAll(".question-row");
+    var score = 0;
+    var questionDetails = [];
+
+    rows.forEach(function(row){
+      var idx = parseInt(row.dataset.index, 10);
+      var q = currentQuestions[idx];
+      var input = row.querySelector(".q-answer");
+      var feedback = row.querySelector(".q-feedback");
+      var timeEl = row.querySelector(".q-time");
+      var userAnswerRaw = input.value.trim();
+      var correct = parseUserAnswer(input.value, q);
+      var qSec = perQuestionSeconds[idx];
+      input.readOnly = true;
+
+      if (timeEl) timeEl.textContent = qSec == null ? "—" : qSec + "s";
+
+      if (correct){
+        score++;
+        row.classList.add("correct");
+        feedback.textContent = "✓";
+        feedback.className = "q-feedback correct";
+      } else {
+        row.classList.add("incorrect");
+        feedback.innerHTML = "✕ <span class=\"q-correction\">(" + formatAnswer(q) + ")</span>";
+        feedback.className = "q-feedback incorrect";
+      }
+
+      questionDetails.push({
+        question: q.equationText,
+        category: q.tag,
+        timeSec: qSec,
+        userAnswer: userAnswerRaw || "(blank)",
+        correctAnswer: formatAnswer(q),
+        correct: correct
+      });
+    });
+
+    var total = totalQ;
+    var pct = total ? Math.round((score / total) * 100) : 0;
+    var name = els.nameInput.value.trim() || "Anonymous";
+
+    els.resultsScore.innerHTML = score + '<span>/' + total + '</span>';
+    els.resultsMeta.innerHTML =
+      name + " &middot; " + pct + "% &middot; time <strong>" + formatDuration(finalElapsedSec) + "</strong>";
+    els.resultsPanel.hidden = false;
+
+    saveScore({
+      date: new Date().toISOString().slice(0, 10),
+      timestamp: new Date().toLocaleString(),
+      name: name,
+      score: score,
+      total: total,
+      pct: pct,
+      durationSec: finalElapsedSec,
+      questions: questionDetails
+    });
+  }
+
+  function getScores(){
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return [];
+      var parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e){
+      return [];
+    }
+  }
+
+  function saveScore(record){
+    var scores = getScores();
+    scores.push(record);
+    if (scores.length > 200) scores = scores.slice(scores.length - 200);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(scores));
+    } catch (e){
+      /* storage unavailable (private browsing, disabled storage) - score won't persist */
+    }
+  }
+
+  function renderHistory(){
+    var scores = getScores().slice().reverse();
+    if (!scores.length){
+      els.historyBody.innerHTML = '<p class="history-empty">No test scores recorded yet on this device.</p>';
+      return;
+    }
+    var rows = scores.map(function(r){
+      var pctClass = r.pct >= 80 ? "good" : r.pct < 50 ? "bad" : "";
+      return "<tr>" +
+        "<td>" + r.date + "</td>" +
+        "<td class=\"name-cell\">" + escapeHtml(r.name) + "</td>" +
+        "<td>" + r.score + "/" + r.total + "</td>" +
+        "<td class=\"history-pct " + pctClass + "\">" + r.pct + "%</td>" +
+        "<td>" + formatDuration(r.durationSec) + "</td>" +
+        "</tr>";
+    }).join("");
+    els.historyBody.innerHTML =
+      '<table class="history-table"><thead><tr>' +
+      "<th>Date</th><th>Name</th><th>Score</th><th>Pct</th><th>Time</th>" +
+      "</tr></thead><tbody>" + rows + "</tbody></table>" +
+      '<div class="history-actions">' +
+      '<button type="button" class="btn btn-ghost" id="categoryStatsBtn">Category Breakdown</button>' +
+      '<button type="button" class="btn btn-ghost" id="retrieveAllBtn">Retrieve All Data</button>' +
+      '</div>' +
+      '<div class="category-stats-panel" id="categoryStatsPanel" hidden></div>' +
+      '<div class="history-details" id="historyDetails" hidden></div>';
+
+    var retrieveBtn = document.getElementById("retrieveAllBtn");
+    var detailsEl = document.getElementById("historyDetails");
+    retrieveBtn.addEventListener("click", function(){
+      if (detailsEl.hidden){
+        detailsEl.innerHTML = renderDetailCards(scores);
+        detailsEl.hidden = false;
+        retrieveBtn.textContent = "Hide Full Data";
+      } else {
+        detailsEl.hidden = true;
+        retrieveBtn.textContent = "Retrieve All Data";
+      }
+    });
+
+    var statsBtn = document.getElementById("categoryStatsBtn");
+    var statsPanel = document.getElementById("categoryStatsPanel");
+    statsBtn.addEventListener("click", function(){
+      if (statsPanel.hidden){
+        statsPanel.innerHTML = renderCategoryStats(scores);
+        statsPanel.hidden = false;
+        statsBtn.textContent = "Hide Breakdown";
+      } else {
+        statsPanel.hidden = true;
+        statsBtn.textContent = "Category Breakdown";
+      }
+    });
+  }
+
+  function renderCategoryStats(scores){
+    var stats = {};
+    scores.forEach(function(r){
+      if (!r.questions) return;
+      r.questions.forEach(function(q){
+        if (!stats[q.category]) stats[q.category] = { correct: 0, incorrect: 0 };
+        if (q.correct) stats[q.category].correct++; else stats[q.category].incorrect++;
+      });
+    });
+
+    var rows = TYPES.map(function(t){ return TAGS[t]; })
+      .filter(function(tag){ return stats[tag]; })
+      .map(function(tag){
+        var s = stats[tag];
+        var total = s.correct + s.incorrect;
+        var pct = total ? Math.round((s.correct / total) * 100) : 0;
+        return '<div class="stat-row">' +
+          '<span class="stat-label">' + escapeHtml(tag) + '</span>' +
+          '<div class="stat-bar"><div class="stat-bar-correct" style="width:' + pct + '%"></div></div>' +
+          '<span class="stat-count">' + s.correct + '/' + total + ' (' + pct + '%)</span>' +
+          '</div>';
+      }).join("");
+
+    if (!rows){
+      return '<p class="detail-empty">No per-question data available yet. Take a test to see the category breakdown.</p>';
+    }
+    return '<div class="category-stats">' + rows + '</div>';
+  }
+
+  function renderDetailCards(scores){
+    return scores.map(function(r){
+      var head = r.date + " &middot; " + escapeHtml(r.name) + " &middot; " + r.score + "/" + r.total +
+        " (" + r.pct + "%) &middot; " + formatDuration(r.durationSec);
+      var body;
+      if (!r.questions || !r.questions.length){
+        body = '<p class="detail-empty">No per-question data recorded for this test.</p>';
+      } else {
+        var qRows = r.questions.map(function(q, i){
+          var cls = q.correct ? "correct" : "incorrect";
+          return "<tr>" +
+            "<td>" + (i + 1) + "</td>" +
+            "<td>" + escapeHtml(q.category) + "</td>" +
+            "<td>" + escapeHtml(q.question) + "</td>" +
+            "<td class=\"" + cls + "\">" + escapeHtml(q.userAnswer) + "</td>" +
+            "<td>" + escapeHtml(q.correctAnswer) + "</td>" +
+            "<td class=\"" + cls + "\">" + (q.correct ? "Correct" : "Wrong") + "</td>" +
+            "<td>" + (q.timeSec == null ? "—" : q.timeSec + "s") + "</td>" +
+            "</tr>";
+        }).join("");
+        body = '<div class="detail-table-wrap"><table class="detail-table"><thead><tr>' +
+          "<th>#</th><th>Category</th><th>Question</th><th>Your Answer</th><th>Correct Answer</th><th>Result</th><th>Time</th>" +
+          "</tr></thead><tbody>" + qRows + "</tbody></table></div>";
+      }
+      return '<div class="detail-card"><div class="detail-head">' + head + '</div>' + body + '</div>';
+    }).join("");
+  }
+
+  function escapeHtml(str){
+    var div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderCategories(){
+    els.categoriesList.innerHTML = TYPES.map(function(t){
+      return '<label class="category-pill">' +
+        '<input type="checkbox" class="category-checkbox" value="' + t + '" checked>' +
+        '<span>' + TAGS[t] + '</span></label>';
+    }).join("");
+  }
+
+  renderCategories();
+
+  function setAllCategories(checked){
+    var boxes = els.categoriesList.querySelectorAll(".category-checkbox");
+    Array.prototype.forEach.call(boxes, function(cb){ cb.checked = checked; });
+  }
+
+  els.selectAllBtn.addEventListener("click", function(){ setAllCategories(true); });
+  els.resetBtn.addEventListener("click", function(){ setAllCategories(false); });
+
+  els.generateBtn.addEventListener("click", generateTest);
+  els.newTestBtn.addEventListener("click", function(){
+    els.resultsPanel.hidden = true;
+    generateTest();
+  });
+  els.quizForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    submitTest();
+  });
+  els.historyBtn.addEventListener("click", function(){
+    renderHistory();
+    els.historyOverlay.hidden = false;
+  });
+  els.closeHistory.addEventListener("click", function(){
+    els.historyOverlay.hidden = true;
+  });
+  els.historyOverlay.addEventListener("click", function(e){
+    if (e.target === els.historyOverlay) els.historyOverlay.hidden = true;
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && !els.historyOverlay.hidden) els.historyOverlay.hidden = true;
+  });
+})();
+</script>
